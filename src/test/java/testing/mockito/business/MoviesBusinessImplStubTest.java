@@ -16,7 +16,7 @@ import testing.mockito.service.MoviesServiceStub;
 public class MoviesBusinessImplStubTest {
 
 	@Test
-	public void getMoviesWhenUsingStub() {
+	public void getMoviesRelatedToDieShouldBeThreeWhenUsingStub() {
 		MoviesService moviesServiceStub = new MoviesServiceStub();
 		MoviesBusinessImpl moviesBusinessImpl = new MoviesBusinessImpl(moviesServiceStub);
 		List<String> filteredMovies = moviesBusinessImpl.getMoviesRelatedToDie();

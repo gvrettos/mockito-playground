@@ -22,7 +22,7 @@ import utils.MoviesDataGenerator;
 public class MoviesBusinessImplMockitoTest {
 	
 	@Test
-	public void getMoviesWhenUsingMockito() {
+	public void getMoviesRelatedToDieShouldBeThreeWhenUsingMockito() {
 		MoviesService moviesServiceMock = mock(MoviesService.class);
 		when(moviesServiceMock.getMovies()).thenReturn(MoviesDataGenerator.generateMovies());		
 		
@@ -32,7 +32,7 @@ public class MoviesBusinessImplMockitoTest {
 	}
 	
 	@Test
-	public void getMoviesWhenUsingMockitoBDD() {
+	public void getMoviesRelatedToDieShouldBeThreeWhenUsingMockitoBDD() {
 		MoviesService moviesServiceMock = mock(MoviesService.class);
 		MoviesBusinessImpl moviesBusinessImpl = new MoviesBusinessImpl(moviesServiceMock);
 		
