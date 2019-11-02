@@ -1,6 +1,7 @@
 package testing.mockito.business;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -25,6 +26,21 @@ public class MoviesBusinessImplMockitoTest {
 		
 		MoviesBusinessImpl moviesBusinessImpl = new MoviesBusinessImpl(moviesServiceMock);
 		List<String> filterdMovies = moviesBusinessImpl.getMoviesRelatedToDie();
+		assertEquals(3, filterdMovies.size());
+	}
+	
+	@Test
+	public void getMoviesWhenUsingMockitoBDD() {
+		MoviesService moviesServiceMock = mock(MoviesService.class);
+		MoviesBusinessImpl moviesBusinessImpl = new MoviesBusinessImpl(moviesServiceMock);
+		
+		// given
+		given(moviesServiceMock.getMovies()).willReturn(MoviesDataGenerator.generateMovies());
+		
+		// when
+		List<String> filterdMovies = moviesBusinessImpl.getMoviesRelatedToDie();
+		
+		// then
 		assertEquals(3, filterdMovies.size());
 	}
 	
