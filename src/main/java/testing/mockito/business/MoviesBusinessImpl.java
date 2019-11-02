@@ -23,5 +23,14 @@ public class MoviesBusinessImpl {
 		}
 		return filteredMovies;
 	}
+	
+	public void deleteMoviesNotOfficialForTheJamesBondFranchise() {
+		List<String> allMovies = moviesService.getMovies();
+		for (String movie: allMovies) {
+			if (movie.contains("(") || movie.contains("again")) {
+				moviesService.deleteMovie(movie);
+			}
+		}
+	}
 
 }

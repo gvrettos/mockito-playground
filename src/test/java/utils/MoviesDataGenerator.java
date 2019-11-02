@@ -7,10 +7,12 @@ public class MoviesDataGenerator {
 	
 	public static List<String> generateMovies() {
 		return Arrays.asList(
+				"Casino royale (1954)",
 				"Dr. No",
 				"From Russia with love",
 				"Goldfinger",
 				"Thunderball",
+				"Casino royale (1967)",
 				"You only live twice",
 				"On Her Majesty's secret service",
 				"Diamonds are forever",
@@ -20,6 +22,7 @@ public class MoviesDataGenerator {
 				"Moonraker",
 				"For your eyes only",
 				"Octopussy",
+				"Never say never again",
 				"A view to a kill",
 				"The living daylights",
 				"License to kill",

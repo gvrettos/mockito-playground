@@ -11,4 +11,9 @@ public class MoviesServiceStub implements MoviesService {
 		return MoviesDataGenerator.generateMovies();
 	}
 
+	@Override
+	public void deleteMovie(String movie) {
+		
+	}
+
 }

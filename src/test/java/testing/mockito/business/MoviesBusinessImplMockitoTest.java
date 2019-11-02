@@ -3,11 +3,13 @@ package testing.mockito.business;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
 
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import testing.mockito.service.MoviesService;
 import utils.MoviesDataGenerator;
@@ -43,5 +45,25 @@ public class MoviesBusinessImplMockitoTest {
 		// then
 		assertEquals(3, filterdMovies.size());
 	}
+	
+	@Test
+	public void deleteMovieShouldBeCalledOnceWhenMovieIsUnofficial() {
+		MoviesService moviesServiceMock = mock(MoviesService.class);
+		MoviesBusinessImpl moviesBusinessImpl = new MoviesBusinessImpl(moviesServiceMock);
+		
+		// given 
+		given(moviesServiceMock.getMovies()).willReturn(MoviesDataGenerator.generateMovies());
+		
+		// when
+		moviesBusinessImpl.deleteMoviesNotOfficialForTheJamesBondFranchise();
+		
+		// then verify how many times deleteMovie() was called
+		verify(moviesServiceMock, Mockito.times(1)).deleteMovie("Casino royale (1967)");
+		// equivalent to verify(mock, Mockito.times(1))
+		verify(moviesServiceMock).deleteMovie("Casino royale (1967)");
+		verify(moviesServiceMock, Mockito.never()).deleteMovie("A view to a kill");
+		verify(moviesServiceMock, Mockito.never()).deleteMovie("Casino royale");
+	}
+	
 	
 }
