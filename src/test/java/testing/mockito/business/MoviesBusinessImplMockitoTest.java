@@ -2,6 +2,7 @@ package testing.mockito.business;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -47,7 +48,7 @@ public class MoviesBusinessImplMockitoTest {
 	}
 	
 	@Test
-	public void deleteMovieShouldBeCalledOnceWhenMovieIsUnofficial() {
+	public void deleteMovieShouldBeCalledOnceWhenMovieIsUnofficialUsingMockito() {
 		MoviesService moviesServiceMock = mock(MoviesService.class);
 		MoviesBusinessImpl moviesBusinessImpl = new MoviesBusinessImpl(moviesServiceMock);
 		
@@ -61,9 +62,26 @@ public class MoviesBusinessImplMockitoTest {
 		verify(moviesServiceMock, Mockito.times(1)).deleteMovie("Casino royale (1967)");
 		// equivalent to verify(mock, Mockito.times(1))
 		verify(moviesServiceMock).deleteMovie("Casino royale (1967)");
+		
 		verify(moviesServiceMock, Mockito.never()).deleteMovie("A view to a kill");
 		verify(moviesServiceMock, Mockito.never()).deleteMovie("Casino royale");
 	}
 	
+	@Test
+	public void deleteMovieShouldBeCalledOnceWhenMovieIsUnofficialUsingMockitoBDD() {
+		MoviesService moviesServiceMock = mock(MoviesService.class);
+		MoviesBusinessImpl moviesBusinessImpl = new MoviesBusinessImpl(moviesServiceMock);
+		
+		// given 
+		given(moviesServiceMock.getMovies()).willReturn(MoviesDataGenerator.generateMovies());
+		
+		// when
+		moviesBusinessImpl.deleteMoviesNotOfficialForTheJamesBondFranchise();
+		
+		// then verify how many times deleteMovie() was called
+		then(moviesServiceMock).should().deleteMovie("Casino royale (1967)");
+		then(moviesServiceMock).should(Mockito.never()).deleteMovie("A view to a kill");
+		then(moviesServiceMock).should(Mockito.never()).deleteMovie("Casino royale");
+	}
 	
 }
