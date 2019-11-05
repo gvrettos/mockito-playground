@@ -1,15 +1,19 @@
 package testing.mockito.business;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
 
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import testing.mockito.service.MoviesService;
@@ -82,6 +86,31 @@ public class MoviesBusinessImplMockitoTest {
 		then(moviesServiceMock).should().deleteMovie("Casino royale (1967)");
 		then(moviesServiceMock).should(Mockito.never()).deleteMovie("A view to a kill");
 		then(moviesServiceMock).should(Mockito.never()).deleteMovie("Casino royale");
+	}
+	
+	// 1. Declare Argument Captor - stringArgumentCaptor
+	// 2. Define Argument Captor on specific method call - deleteMovie()
+	// 3. Capture the argument - during then/assertions
+	@Test
+	public void deleteMovieShouldBeCalledOnceWhenMovieIsUnofficialUsingMockitoBDDAndArgumentCaptor() {
+		ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
+		
+		MoviesService moviesServiceMock = mock(MoviesService.class);
+		MoviesBusinessImpl moviesBusinessImpl = new MoviesBusinessImpl(moviesServiceMock);
+		
+		// given 
+		given(moviesServiceMock.getMovies()).willReturn(MoviesDataGenerator.generateMovies());
+		
+		// when
+		moviesBusinessImpl.deleteMoviesNotOfficialForTheJamesBondFranchise();
+		
+		// then verify how many times deleteMovie() was called
+		then(moviesServiceMock).should(times(3)).deleteMovie(stringArgumentCaptor.capture());
+		
+		// more then (assertions)
+		assertThat(stringArgumentCaptor.getAllValues().size(), is(3));
+		assertThat(stringArgumentCaptor.getAllValues(), hasItem("Casino royale (1967)"));
+		assertThat(stringArgumentCaptor.getAllValues(), not(hasItem("Casino royale")));
 	}
 	
 }
