@@ -19,14 +19,15 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import testing.mockito.service.MoviesService;
 import utils.MoviesDataGenerator;
@@ -37,8 +38,12 @@ import utils.MoviesDataGenerator;
 // 3. They can focus on mocking only the exact method we want to test.
 // 4. They offer more functionality than stubbing (e.g. they verify method calls).
 
-@RunWith(MockitoJUnitRunner.class)
 public class MoviesBusinessImplMockitoAnnotationsTest {
+	
+	// The advantage of using a @Rule instead of @RunWith(org.mockito.runners.MockitoJUnitRunner) is that 
+	// you are able to use multiple Rules in the same test class whereas only one @RunWith environment
+	@Rule
+	public MockitoRule mockitoRule = MockitoJUnit.rule();
 	
 	@InjectMocks
 	MoviesBusinessImpl moviesBusinessImpl;
