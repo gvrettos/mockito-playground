@@ -1,8 +1,16 @@
 package testing.mockito.business;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.startsWith;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.emptyCollectionOf;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
@@ -33,7 +41,7 @@ public class MoviesBusinessImplMockitoTest {
 		
 		MoviesBusinessImpl moviesBusinessImpl = new MoviesBusinessImpl(moviesServiceMock);
 		List<String> filterdMovies = moviesBusinessImpl.getMoviesRelatedToDie();
-		assertEquals(3, filterdMovies.size());
+		assertThat(filterdMovies, hasSize(3));
 	}
 	
 	@Test
@@ -48,7 +56,7 @@ public class MoviesBusinessImplMockitoTest {
 		List<String> filterdMovies = moviesBusinessImpl.getMoviesRelatedToDie();
 		
 		// then
-		assertEquals(3, filterdMovies.size());
+		assertThat(filterdMovies, hasSize(3));
 	}
 	
 	@Test
@@ -111,6 +119,20 @@ public class MoviesBusinessImplMockitoTest {
 		assertThat(stringArgumentCaptor.getAllValues().size(), is(3));
 		assertThat(stringArgumentCaptor.getAllValues(), hasItem("Casino royale (1967)"));
 		assertThat(stringArgumentCaptor.getAllValues(), not(hasItem("Casino royale")));
+		
+		// more assertions to demonstrate some more Hamcrest Matchers
+		assertThat(stringArgumentCaptor.getAllValues(), notNullValue());
+		assertThat(stringArgumentCaptor.getAllValues(), not(is(emptyCollectionOf(String.class))));
+		assertThat(stringArgumentCaptor.getAllValues(), hasSize(3));
+		assertThat(
+				stringArgumentCaptor.getAllValues(), 
+				contains("Casino royale (1954)", "Casino royale (1967)", "Never say never again"));
+		assertThat(stringArgumentCaptor.getAllValues(), not(contains("Casino royale (1967)")));
+		assertThat(
+				stringArgumentCaptor.getAllValues(), 
+				containsInAnyOrder("Never say never again", "Casino royale (1967)", "Casino royale (1954)"));
+		assertThat(stringArgumentCaptor.getAllValues(), not(containsInAnyOrder("Casino royale")));
+		assertThat(stringArgumentCaptor.getAllValues(), not(everyItem(startsWith("Casino"))));
 	}
 	
 }
